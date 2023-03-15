@@ -118,13 +118,11 @@ Responsibilities
 nombre::string
 especie::Especie
 descripcion::string
+adoptante::Adoptante
+estadoAdopcion::EstadoAdopcion
+fechaAdopcion::date
 --
-#Operation(i: int): int
-/+AbstractOperation()/
---
-Responsibilities
--- Resp1
-*-- Resp2*</panel_attributes>
+fechaVencimiento(fechaAdopcion+30 dias)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -160,14 +158,10 @@ Responsibilities
 --
 nombre::string
 descripcion::string
-adoptable::boolean
---
-#Operation(i: int): int
-/+AbstractOperation()/
---
-Responsibilities
--- Resp1
-*-- Resp2*</panel_attributes>
+monto::int
+cantidad::int
+habitat::Habitat
+--</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -180,8 +174,9 @@ Responsibilities
     </coordinates>
     <panel_attributes>Adoptante
 --
--id: Long
-_-ClassAttribute: Long_
+nombre::string
+dni::int
+
 --
 #Operation(i: int): int
 /+AbstractOperation()/
@@ -242,6 +237,7 @@ Responsibilities
     <panel_attributes>Campaña
 --
 nombre::string
+descripcion::string
 --
 #Operation(i: int): int
 /+AbstractOperation()/
@@ -270,6 +266,20 @@ _-ClassAttribute: Long_
 Responsibilities
 -- Resp1
 *-- Resp2*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>798</x>
+      <y>246</y>
+      <w>126</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>EstadoAdopcion
+--
+nombre::string
+descripcion::string</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
