@@ -4,7 +4,7 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>138</x>
+      <x>42</x>
       <y>246</y>
       <w>126</w>
       <h>114</h>
@@ -24,7 +24,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>138</x>
+      <x>42</x>
       <y>6</y>
       <w>126</w>
       <h>114</h>
@@ -45,7 +45,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>138</x>
+      <x>42</x>
       <y>366</y>
       <w>126</w>
       <h>114</h>
@@ -66,7 +66,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>270</x>
+      <x>174</x>
       <y>246</y>
       <w>126</w>
       <h>114</h>
@@ -87,7 +87,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>138</x>
+      <x>42</x>
       <y>126</y>
       <w>126</w>
       <h>114</h>
@@ -108,7 +108,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>666</x>
+      <x>570</x>
       <y>246</y>
       <w>126</w>
       <h>114</h>
@@ -128,7 +128,7 @@ fechaVencimiento(fechaAdopcion+30 dias)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>468</x>
+      <x>372</x>
       <y>126</y>
       <w>126</w>
       <h>114</h>
@@ -149,7 +149,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>534</x>
+      <x>438</x>
       <y>246</y>
       <w>126</w>
       <h>114</h>
@@ -167,7 +167,7 @@ habitat::Habitat
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>606</x>
+      <x>510</x>
       <y>366</y>
       <w>126</w>
       <h>114</h>
@@ -189,7 +189,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>402</x>
+      <x>306</x>
       <y>366</y>
       <w>126</w>
       <h>114</h>
@@ -209,7 +209,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>402</x>
+      <x>306</x>
       <y>246</y>
       <w>126</w>
       <h>114</h>
@@ -229,7 +229,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>600</x>
+      <x>504</x>
       <y>126</y>
       <w>126</w>
       <h>114</h>
@@ -250,7 +250,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>270</x>
+      <x>174</x>
       <y>66</y>
       <w>126</w>
       <h>114</h>
@@ -271,7 +271,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>798</x>
+      <x>702</x>
       <y>246</y>
       <w>126</w>
       <h>114</h>
@@ -279,7 +279,8 @@ Responsibilities
     <panel_attributes>EstadoAdopcion
 --
 nombre::string
-descripcion::string</panel_attributes>
+descripcion::string
+--</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
