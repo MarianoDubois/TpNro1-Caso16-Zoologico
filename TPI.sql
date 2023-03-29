@@ -162,11 +162,12 @@ JOIN Especie e ON a.especie = e.id
 WHERE e.nombre = 'Mamifero' AND a.alimentacion = 2 AND a.estadoAdopcion IS NOT NULL;
 
 #Query 5
-SELECT g.nombre, g.apellido, COUNT(*) AS total_visitas_guiadas
-FROM Guia g
-JOIN visita_visitaguiada vvg ON g.id = vvg.guia
-WHERE MONTH(vvg.fecha) = MONTH(CURRENT_DATE()) AND YEAR(vvg.fecha) = YEAR(CURRENT_DATE()) 
-AND (DATEDIFF(CURRENT_DATE(), g.fechaNacimiento) / 365.25) > 23 AND g.nombre REGEXP '[aeiouAEIOU]$'
-GROUP BY g.id;
-
-drop database TPI;
+SELECT Guia.nombre, Guia.apellido, COUNT(*) AS visitas_realizadas
+FROM Guia
+INNER JOIN VisitaGuiada ON Guia.id = VisitaGuiada.guia
+INNER JOIN visita_visitaguiada ON VisitaGuiada.id = visita_visitaguiada.visitaguiada
+INNER JOIN Visita ON visita_visitaguiada.visita = Visita.id
+WHERE MONTH(VisitaGuiada.fecha) = MONTH(CURDATE()) AND 
+      YEAR(CURDATE()) - YEAR(Guia.fechaNacimiento) > 23 AND
+      Guia.nombre LIKE '%[aeiou]'
+GROUP BY Guia.nombre, Guia.apellido;
