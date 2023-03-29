@@ -101,3 +101,31 @@ CREATE TABLE Area_VisitaGuiada(
     FOREIGN KEY(visitaguiada) REFERENCES VisitaGuiada(id),
     FOREIGN KEY(area) REFERENCES Area(id)
 );
+
+INSERT INTO Visita (id, dni, nombre, apellido, fechaNacimiento) VALUES
+(1, 12345678, 'Juan', 'Pérez', '1990-01-01'),
+(2, 23456789, 'María', 'García', '1985-05-15'),
+(3, 34567890, 'Pedro', 'López', '2000-12-31');
+
+INSERT INTO VisitaGuiada (id, nombre, descripcion) VALUES
+(1, 'Visita guiada por la selva', 'Recorrido por la selva amazónica'),
+(2, 'Visita guiada por la sabana', 'Recorrido por la sabana africana');
+
+INSERT INTO Guia (id, dni, nombre, apellido, fechaNacimiento) VALUES
+(1, 11111111, 'Pablo', 'Gómez', '1980-03-20'),
+(2, 22222222, 'Lucía', 'Fernández', '1995-08-10');
+
+INSERT INTO Area (id, nombre, descripcion) VALUES
+(1, 'Selva', 'Bosque tropical'),
+(2, 'Savana', 'Pradera africana');
+
+INSERT INTO Especie
+INSERT INTO Habitat
+INSERT INTO Adoptante
+INSERT INTO Animales
+INSERT INTO Qr
+INSERT INTO Campaign
+INSERT INTO Especie_Campaign
+INSERT INTO estadoAdopcion
+INSERT INTO visita_visitaguiada
+INSERT INTO Area_VisitaGuiada
