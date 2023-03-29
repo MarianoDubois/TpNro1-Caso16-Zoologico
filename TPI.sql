@@ -1,7 +1,14 @@
--- Active: 1679485957399@@127.0.0.1@3306@test
+-- Active: 1679485957399@@127.0.0.1@3306@tpi
 CREATE DATABASE TPI;
 USE TPI;
 CREATE TABLE Visita (
+  id INT PRIMARY KEY,
+  dni INT,
+  nombre VARCHAR(255),
+  apellido VARCHAR(255),
+  fechaNacimiento DATE
+);
+CREATE TABLE Guia (
   id INT PRIMARY KEY,
   dni INT,
   nombre VARCHAR(255),
@@ -12,17 +19,10 @@ CREATE TABLE VisitaGuiada (
   id INT PRIMARY KEY,
   nombre VARCHAR(255),
   descripcion VARCHAR(255),
-  fecha DATETIME
-  
+  fecha DATETIME,
+  guia INT,
+  FOREIGN KEY (guia) REFERENCES Guia(id)
 );
-CREATE TABLE Guia (
-  id INT PRIMARY KEY,
-  dni INT,
-  nombre VARCHAR(255),
-  apellido VARCHAR(255),
-  fechaNacimiento DATE
-);
-
 CREATE TABLE Area (
   id INT PRIMARY KEY,
   nombre VARCHAR(255),
@@ -102,10 +102,10 @@ CREATE TABLE Especie_Campaign(
 
 CREATE TABLE visita_visitaguiada(
     id INT PRIMARY KEY,
-    guia INT,
+    visitaguiada INT,
     visita INT,
     FOREIGN KEY (visita) REFERENCES Visita(id),
-    FOREIGN KEY (guia) REFERENCES Guia(id)
+    FOREIGN KEY(visitaguiada) REFERENCES VisitaGuiada(id)
 );
 CREATE TABLE Area_VisitaGuiada(
     id INT PRIMARY KEY,
@@ -117,8 +117,8 @@ CREATE TABLE Area_VisitaGuiada(
 
 #Inserts for all tables
 INSERT INTO Visita (id, dni, nombre, apellido, fechaNacimiento) VALUES (1, 12345678, 'Juan', 'Pérez', '1990-01-01');
-INSERT INTO VisitaGuiada (id, nombre, descripcion, fecha) VALUES (1, 'Visita guiada 1', 'Descripción de la visita guiada 1', '2023-04-01 10:00:00');
 INSERT INTO Guia (id, dni, nombre, apellido, fechaNacimiento) VALUES (1, 23456789, 'María', 'García', '1995-05-05');
+INSERT INTO VisitaGuiada (id, nombre, descripcion, fecha, guia) VALUES (1, 'Visita guiada 1', 'Descripción de la visita guiada 1', '2023-04-01 10:00:00', 1);
 INSERT INTO Area (id, nombre, descripcion) VALUES (1, 'Área 1', 'Descripción del área 1');
 INSERT INTO Especie (id, nombre, descripcion) VALUES (1, 'Especie 1', 'Descripción de la especie 1');
 INSERT INTO Habitat (id, nombre, descripcion) VALUES (1, 'Hábitat 1', 'Descripción del hábitat 1');
@@ -129,7 +129,7 @@ INSERT INTO Animales (id, nombre, descripcion, precio, fechaAdopcion, fechaNacim
 INSERT INTO Qr (id, link, habitat) VALUES (1, 'https://www.example.com/qr1', 1);
 INSERT INTO Campaign (id, nombre, descripcion) VALUES (1, 'Campaña 1', 'Descripción de la campaña 1');
 INSERT INTO Especie_Campaign (id, especie, campaign) VALUES (1, 1, 1);
-INSERT INTO visita_visitaguiada (id, guia, visita) VALUES (1, 1, 1);
+INSERT INTO visita_visitaguiada (id, visitaguiada, visita) VALUES (1, 1, 1);
 INSERT INTO Area_VisitaGuiada (id, visitaguiada, area) VALUES (1, 1, 1);
 
 #Query 1
@@ -167,4 +167,6 @@ FROM Guia g
 JOIN visita_visitaguiada vvg ON g.id = vvg.guia
 WHERE MONTH(vvg.fecha) = MONTH(CURRENT_DATE()) AND YEAR(vvg.fecha) = YEAR(CURRENT_DATE()) 
 AND (DATEDIFF(CURRENT_DATE(), g.fechaNacimiento) / 365.25) > 23 AND g.nombre REGEXP '[aeiouAEIOU]$'
-GROUP BY g.id
+GROUP BY g.id;
+
+drop database TPI;
