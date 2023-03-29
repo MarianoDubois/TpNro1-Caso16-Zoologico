@@ -10,7 +10,8 @@ CREATE TABLE Visita (
 CREATE TABLE VisitaGuiada (
   id INT PRIMARY KEY,
   nombre VARCHAR(255),
-  descripcion VARCHAR(255)
+  descripcion VARCHAR(255),
+  fecha DATETIME
   
 );
 CREATE TABLE Guia (
@@ -46,6 +47,16 @@ CREATE TABLE Adoptante (
   apellido VARCHAR(255),
   fechaNacimiento DATE
 );
+CREATE TABLE EstadoAdopcion(
+    id INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    descripcion VARCHAR(100)
+);
+CREATE TABLE Alimentacion(
+  id INT PRIMARY KEY,
+  nombre VARCHAR(50),
+  descripcion VARCHAR(100)
+);
 
 CREATE TABLE Animales (
   id INT PRIMARY KEY,
@@ -57,10 +68,14 @@ CREATE TABLE Animales (
   fechaDefuncion DATE,
   especie INT,
   adoptante INT,
-  estadoAdopcion VARCHAR(255),
+  estadoAdopcion INT,
+  alimentacion INT,
+  Foreign Key (alimentacion) REFERENCES Alimentacion(id),
+  FOREIGN KEY (estadoAdopcion) REFERENCES EstadoAdopcion(id),
   FOREIGN KEY (especie) REFERENCES Especie(id),
   FOREIGN KEY (adoptante) REFERENCES Adoptante(id)
 );
+
 CREATE TABLE Qr (
   id INT PRIMARY KEY,
   link VARCHAR(255),
@@ -74,6 +89,7 @@ CREATE TABLE Campaign (
   descripcion VARCHAR(255)
 );
 
+
 CREATE TABLE Especie_Campaign(
     id INT PRIMARY KEY,
     especie INT,
@@ -82,11 +98,7 @@ CREATE TABLE Especie_Campaign(
     FOREIGN KEY (campaign) REFERENCES Campaign(id)
 );
 
-CREATE TABLE estadoAdopcion(
-    id INT PRIMARY KEY,
-    nombre VARCHAR(100),
-    descripcion VARCHAR(100)
-);
+
 CREATE TABLE visita_visitaguiada(
     id INT PRIMARY KEY,
     guia INT,
@@ -102,49 +114,56 @@ CREATE TABLE Area_VisitaGuiada(
     FOREIGN KEY(area) REFERENCES Area(id)
 );
 
-INSERT INTO Visita (id, dni, nombre, apellido, fechaNacimiento) VALUES
-(1, 12345678, 'Juan', 'Pérez', '1990-01-01'),
-(2, 23456789, 'María', 'García', '1985-05-15'),
-(3, 34567890, 'Pedro', 'López', '2000-12-31');
+#Inserts for all tables
+INSERT INTO Visita (id, dni, nombre, apellido, fechaNacimiento) VALUES (1, 12345678, 'Juan', 'Pérez', '1990-01-01');
+INSERT INTO VisitaGuiada (id, nombre, descripcion, fecha) VALUES (1, 'Visita guiada 1', 'Descripción de la visita guiada 1', '2023-04-01 10:00:00');
+INSERT INTO Guia (id, dni, nombre, apellido, fechaNacimiento) VALUES (1, 23456789, 'María', 'García', '1995-05-05');
+INSERT INTO Area (id, nombre, descripcion) VALUES (1, 'Área 1', 'Descripción del área 1');
+INSERT INTO Especie (id, nombre, descripcion) VALUES (1, 'Especie 1', 'Descripción de la especie 1');
+INSERT INTO Habitat (id, nombre, descripcion) VALUES (1, 'Hábitat 1', 'Descripción del hábitat 1');
+INSERT INTO Adoptante (id, dni, nombre, apellido, fechaNacimiento) VALUES (1, 34567890, 'Ana', 'López', '2000-10-10');
+INSERT INTO EstadoAdopcion (id, nombre, descripcion) VALUES (1, 'Disponible', 'El animal está disponible para ser adoptado');
+INSERT INTO Alimentacion (id, nombre, descripcion) VALUES (1, 'Carnívoro', 'Alimentación basada en carne');
+INSERT INTO Animales (id, nombre, descripcion, precio, fechaAdopcion, fechaNacimiento, fechaDefuncion, especie, adoptante, estadoAdopcion, alimentacion) VALUES (1, 'Animal 1', 'Descripción del animal 1', 100, '2023-03-01', '2022-01-01', NULL, 1, NULL, 1, 1);
+INSERT INTO Qr (id, link, habitat) VALUES (1, 'https://www.example.com/qr1', 1);
+INSERT INTO Campaign (id, nombre, descripcion) VALUES (1, 'Campaña 1', 'Descripción de la campaña 1');
+INSERT INTO Especie_Campaign (id, especie, campaign) VALUES (1, 1, 1);
+INSERT INTO visita_visitaguiada (id, guia, visita) VALUES (1, 1, 1);
+INSERT INTO Area_VisitaGuiada (id, visitaguiada, area) VALUES (1, 1, 1);
 
-INSERT INTO VisitaGuiada (id, nombre, descripcion) VALUES
-(1, 'Visita guiada por la selva', 'Recorrido por la selva amazónica'),
-(2, 'Visita guiada por la sabana', 'Recorrido por la sabana africana');
+#Query 1
+SELECT VisitaGuiada.id, VisitaGuiada.nombre, VisitaGuiada.descripcion, VisitaGuiada.fecha
+FROM VisitaGuiada
+INNER JOIN visita_visitaguiada ON VisitaGuiada.id = visita_visitaguiada.visitaguiada
+INNER JOIN Visita ON visita_visitaguiada.visita = Visita.id
+WHERE VisitaGuiada.fecha >= CURDATE() AND VisitaGuiada.fecha < CURDATE() + INTERVAL 1 DAY AND TIMESTAMPDIFF(YEAR, Visita.fechaNacimiento, CURDATE()) > 30;
 
-INSERT INTO Guia (id, dni, nombre, apellido, fechaNacimiento) VALUES
-(1, 11111111, 'Pablo', 'Gómez', '1980-03-20'),
-(2, 22222222, 'Lucía', 'Fernández', '1995-08-10');
+#Query 2
+SELECT E.nombre AS clase_animal, COUNT(A.id) AS cantidad_total, 
+       SUM(CASE WHEN A.fechaDefuncion IS NULL THEN 1 ELSE 0 END) AS cantidad_actual,
+       SUM(CASE WHEN A.fechaDefuncion IS NOT NULL THEN 1 ELSE 0 END) AS cantidad_defunciones
+FROM Animales A
+INNER JOIN Especie E ON A.especie = E.id
+GROUP BY E.nombre;
 
-INSERT INTO Area (id, nombre, descripcion) VALUES
-(1, 'Selva', 'Bosque tropical'),
-(2, 'Savana', 'Pradera africana');
+#Query 3
+SELECT E.nombre AS especie, COUNT(A.id) AS cantidad_total, 
+       SUM(CASE WHEN YEAR(A.fechaNacimiento) = YEAR(CURRENT_DATE()) THEN 1 ELSE 0 END) AS cantidad_nacimientos,
+       SUM(CASE WHEN YEAR(A.fechaDefuncion) = YEAR(CURRENT_DATE()) THEN 1 ELSE 0 END) AS cantidad_defunciones
+FROM Animales A
+INNER JOIN Especie E ON A.especie = E.id
+GROUP BY E.nombre;
 
-INSERT INTO Especie (id, nombre, descripcion)
-VALUES (1, 'Perro', 'Mamífero doméstico de la familia de los cánidos');
+#Query 4
+SELECT *
+FROM Animales a
+JOIN Especie e ON a.especie = e.id
+WHERE e.nombre = 'Mamifero' AND a.alimentacion = 2 AND a.estadoAdopcion IS NOT NULL;
 
-INSERT INTO Habitat (id, nombre, descripcion)
-VALUES (1, 'Bosque templado', 'Ecosistema caracterizado por árboles de hoja caduca');
-
-INSERT INTO Adoptante (id, dni, nombre, apellido, fechaNacimiento)
-VALUES (1, 12345678, 'Juan', 'Pérez', '1990-05-01');
-
-INSERT INTO Animales (id, nombre, descripcion, precio, fechaAdopcion, fechaNacimiento, fechaDefuncion, especie, adoptante, estadoAdopcion)
-VALUES (1, 'Firulais', 'Perro de raza Labrador', 5000, '2022-01-01', '2021-06-01', NULL, 1, 1, 'En adopción');
-
-INSERT INTO Qr (id, link, habitat)
-VALUES (1, 'https://example.com/qr1', 1);
-
-INSERT INTO Campaign (id, nombre, descripcion)
-VALUES (1, 'Campaña de adopción 2022', 'Promoción de adopción de animales para el año 2022');
-
-INSERT INTO Especie_Campaign (id, especie, campaign)
-VALUES (1, 1, 1);
-
-INSERT INTO estadoAdopcion (id, nombre, descripcion)
-VALUES (1, 'En adopción', 'Animal disponible para ser adoptado');
-
-INSERT INTO visita_visitaguiada (id, guia, visita)
-VALUES (1, 1, 1);
-
-INSERT INTO Area_VisitaGuiada (id, visitaguiada, area)
-VALUES (1, 1, 1);
+#Query 5
+SELECT g.nombre, g.apellido, COUNT(*) AS total_visitas_guiadas
+FROM Guia g
+JOIN visita_visitaguiada vvg ON g.id = vvg.guia
+WHERE MONTH(vvg.fecha) = MONTH(CURRENT_DATE()) AND YEAR(vvg.fecha) = YEAR(CURRENT_DATE()) 
+AND (DATEDIFF(CURRENT_DATE(), g.fechaNacimiento) / 365.25) > 23 AND g.nombre REGEXP '[aeiouAEIOU]$'
+GROUP BY g.id
