@@ -119,13 +119,32 @@ INSERT INTO Area (id, nombre, descripcion) VALUES
 (1, 'Selva', 'Bosque tropical'),
 (2, 'Savana', 'Pradera africana');
 
-INSERT INTO Especie
-INSERT INTO Habitat
-INSERT INTO Adoptante
-INSERT INTO Animales
-INSERT INTO Qr
-INSERT INTO Campaign
-INSERT INTO Especie_Campaign
-INSERT INTO estadoAdopcion
-INSERT INTO visita_visitaguiada
-INSERT INTO Area_VisitaGuiada
+INSERT INTO Especie (id, nombre, descripcion)
+VALUES (1, 'Perro', 'Mamífero doméstico de la familia de los cánidos');
+
+INSERT INTO Habitat (id, nombre, descripcion)
+VALUES (1, 'Bosque templado', 'Ecosistema caracterizado por árboles de hoja caduca');
+
+INSERT INTO Adoptante (id, dni, nombre, apellido, fechaNacimiento)
+VALUES (1, 12345678, 'Juan', 'Pérez', '1990-05-01');
+
+INSERT INTO Animales (id, nombre, descripcion, precio, fechaAdopcion, fechaNacimiento, fechaDefuncion, especie, adoptante, estadoAdopcion)
+VALUES (1, 'Firulais', 'Perro de raza Labrador', 5000, '2022-01-01', '2021-06-01', NULL, 1, 1, 'En adopción');
+
+INSERT INTO Qr (id, link, habitat)
+VALUES (1, 'https://example.com/qr1', 1);
+
+INSERT INTO Campaign (id, nombre, descripcion)
+VALUES (1, 'Campaña de adopción 2022', 'Promoción de adopción de animales para el año 2022');
+
+INSERT INTO Especie_Campaign (id, especie, campaign)
+VALUES (1, 1, 1);
+
+INSERT INTO estadoAdopcion (id, nombre, descripcion)
+VALUES (1, 'En adopción', 'Animal disponible para ser adoptado');
+
+INSERT INTO visita_visitaguiada (id, guia, visita)
+VALUES (1, 1, 1);
+
+INSERT INTO Area_VisitaGuiada (id, visitaguiada, area)
+VALUES (1, 1, 1);
